@@ -1,4 +1,4 @@
 const Utils = require("./utils.js")
-const RobinhoodRequestWrapper = require("./request.js")
+const Request = require("./request.js")
 
-module.exports = {Utils, RobinhoodRequestWrapper}
+module.exports = {Utils, Request}

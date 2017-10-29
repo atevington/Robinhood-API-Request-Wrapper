@@ -12,7 +12,7 @@ const RobinhoodWrapper = require("./path/to/Robinhood-API-Request-Wrapper")
 const Utils = RobinhoodWrapper.Utils
 
 // Base request class - methods are a 1:1 mapping of the API
-const RobinhoodRequestWrapper = RobinhoodWrapper.RobinhoodRequestWrapper
+const RobinhoodRequestWrapper = RobinhoodWrapper.Request
 
 // Create an api instance - MFA must be disabled on your account
 const api = new RobinhoodRequestWrapper("username", "password")

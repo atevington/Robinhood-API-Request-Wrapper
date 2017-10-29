@@ -108,10 +108,36 @@ const placeOrderAtMarket = (api, symbol, quantity) => (
 	})
 )
 
+const sellAllAtMarket = (api, symbol) => (
+	new Promise((resolve, reject) => {
+		Promise.resolve()
+			.then(() => getPositionForSymbol(api, symbol))
+			.then(position => placeOrderAtMarket(api, symbol, position ? parseFloat(position.quantity) * -1 : 0))
+			.then(status => {
+				resolve(status)
+			})
+			.catch(reject)
+	})
+)
+
+const buyAtMarketByTarget = (api, symbol, purchaseTarget) => (
+	new Promise((resolve, reject) => {
+		Promise.resolve()
+			.then(() => api.getQuote(symbol))
+			.then(quote => placeOrderAtMarket(api, symbol, parseFloat(quote.ask_price) === 0 ? 0 : Math.round(purchaseTarget / parseFloat(quote.ask_price)) || 1))
+			.then(status => {
+				resolve(status)
+			})
+			.catch(reject)
+	})
+)
+
 module.exports = {
 	getFirstActiveAccount,
 	getInstrument,
 	getMarketOrderConfig,
 	getPositionForSymbol,
-	placeOrderAtMarket
+	placeOrderAtMarket,
+	sellAllAtMarket,
+	buyAtMarketByTarget
 }
