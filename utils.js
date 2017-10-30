@@ -98,13 +98,17 @@ const getPositionForSymbol = (api, symbol) => (
 
 const placeOrderAtMarket = (api, symbol, quantity) => (
 	new Promise((resolve, reject) => {
-		Promise.resolve()
-			.then(() => getMarketOrderConfig(api, symbol, quantity))
-			.then(config => api.placeOrder(config))
-			.then(status => {
-				resolve(status)
-			})
-			.catch(reject)
+		if (quantity !== 0) {
+			Promise.resolve()
+				.then(() => getMarketOrderConfig(api, symbol, quantity))
+				.then(config => api.placeOrder(config))
+				.then(status => {
+					resolve(status)
+				})
+				.catch(reject)	
+		} else {
+			reject({error: "Quantity must be non-zero."})
+		}
 	})
 )
 
@@ -124,7 +128,11 @@ const buyAtMarketByTarget = (api, symbol, purchaseTarget) => (
 	new Promise((resolve, reject) => {
 		Promise.resolve()
 			.then(() => api.getQuote(symbol))
-			.then(quote => placeOrderAtMarket(api, symbol, parseFloat(quote.ask_price) === 0 ? 0 : Math.round(purchaseTarget / parseFloat(quote.ask_price)) || 1))
+			.then(quote => placeOrderAtMarket(
+				api,
+				symbol,
+				parseFloat(quote.ask_price) === 0 ? 0 : (Math.round(purchaseTarget / parseFloat(quote.ask_price)) || 1)
+			))
 			.then(status => {
 				resolve(status)
 			})
