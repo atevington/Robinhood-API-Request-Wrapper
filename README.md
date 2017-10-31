@@ -93,7 +93,7 @@ Utils.getPositionForSymbol(api, "AAPL").then(position => {
 // Place a good-for-day immediate market order, quantity > 0 to buy, quantity < 0 to sell
 // Note that market orders are actually converted to limit orders
 // https://support.robinhood.com/hc/en-us/articles/208650386-Order-Types
-// So this implementation just sets the limit price at the current bid or ask
+// So this implementation just sets the price using a combination of the ask, bid, and last trade prices
 Utils.placeOrderAtMarket(api, "AAPL", 1).then(status => {
 	console.log(status)
 })
